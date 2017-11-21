@@ -12,41 +12,7 @@ my_clear <- function(szoveg){
 eredmy_szoveg_clean <- function(szoveg) {
   return(trimws(gsub(' +',' ',gsub('\r\n', '', szoveg, fixed = T))))
 }
-get_reszlet_by_id  <- function(my_id) {
-  
-  my_link <- paste0('https://kozigallas.gov.hu/pages/jobviewer.aspx?ID=',my_id)
-  
-  
-  adat<- read_html(my_link)
-  reszlet_lista <- list()
-  
-  idotartam <- adat%>%
-    html_node('#pJobDuration1')%>%
-    html_text()
-  reszlet_lista["idotartam"] <- eredmy_szoveg_clean(idotartam)
-  
-  tipus <- adat%>%
-    html_node('#pTypeOfEmploying1')%>%
-    html_text()
-  reszlet_lista["tipus"] <- eredmy_szoveg_clean(tipus)
-  
-  
-  osszes <- adat%>%
-    html_nodes('.MsoNormal')%>%
-    html_text()
-  osszes <- eredmy_szoveg_clean(osszes)
-  
-  reszlet_lista["helyszin"] <- osszes[which(osszes=='A munkavégzés helye:')+1]
-  
-  return(data.table(data.frame(reszlet_lista)))
-}
 
-get_reszlet_df <- function(idk){
-  
-  ered<- lapply(idk, get_reszlet_by_id)
-  
-  return(data.table(rbindlist(ered)))
-}
 get_page<- function(i){
   
   
@@ -75,8 +41,8 @@ get_page<- function(i){
   id <- sapply(strsplit(linkek, "'", fixed = T),"[[", 2)
   my_df$id <- id 
   
-  f <- cbind(my_df, get_reszlet_df(my_df$id))
-  return(f)
+
+  return(my_df)
   
 }
 
@@ -102,3 +68,11 @@ while(TRUE){
 final_adat <- rbindlist(my_list)
 
 write.csv(final_adat, 'eredmeny.csv', row.names =F)
+
+print('készen vagyok')
+
+
+a <-fread('eredmeny.csv')
+
+
+
