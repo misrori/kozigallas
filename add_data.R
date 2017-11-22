@@ -127,4 +127,7 @@ f$tankerulet_felelos<-
 
 f2<- f[,c(1:2,11,3, 12, 4:10)]
 
-write.xlsx(f2, 'vege_2.xlsx', sheetName="Sheet1",  col.names=TRUE)
+write.xlsx(f2, 'vege_2_1.xlsx', sheetName="Sheet1",  col.names=TRUE)
+
+write.csv(f2, 'allasok_telep_adatokkal_kategoriakkal.csv', row.names = F)
+
