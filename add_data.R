@@ -104,4 +104,27 @@ final_df <- telep_besorolassal[kozig_allasok]
 write.csv(f, 'allasok_telep_adatokkal.csv', row.names = F)
 # read back
 
+write.xlsx(f, 'vege.xlsx', sheetName="Sheet1",  col.names=TRUE)
 
+f$tanar<-
+ifelse(
+  grepl('tanár',tolower(f$allas_megnevezese)) | grepl('tanító',tolower(f$allas_megnevezese)) |
+  grepl('pedagógus',tolower(f$allas_megnevezese)) | grepl('óvoda',tolower(f$allas_megnevezese)) |
+  grepl('iskola',tolower(f$allas_megnevezese)) | grepl('óvodapedagógus',tolower(f$allas_megnevezese)) |
+  grepl('gyógypedagógus',tolower(f$allas_megnevezese)) | grepl('pszichológus',tolower(f$allas_megnevezese)) |
+  grepl('logopédus',tolower(f$allas_megnevezese)) ,
+  1,0)
+
+
+
+f$tankerulet_felelos<-
+  ifelse(
+    grepl('tankerület',tolower(f$kozzetevo)) | grepl('óvoda',tolower(f$kozzetevo)) |
+      grepl('iskola',tolower(f$kozzetevo)) | grepl('szakképzés',tolower(f$kozzetevo)) |
+      grepl('szakképzési',tolower(f$kozzetevo)) | grepl('szakképző',tolower(f$kozzetevo)),
+    1,0)
+
+
+f2<- f[,c(1:2,11,3, 12, 4:10)]
+
+write.xlsx(f2, 'vege_2.xlsx', sheetName="Sheet1",  col.names=TRUE)
